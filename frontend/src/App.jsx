@@ -29,7 +29,7 @@ function App() {
     setLoading(true)
     setError(null)
     try {
-      const apiUrl = import.meta.env.VITE_NODE_ENV == 'production' ? "https://ai-10022200180.onrender.com" : 'http://localhost:5000'
+      const apiUrl = import.meta.env.PROD ? "https://ai-10022200180.onrender.com" : 'http://localhost:5000'
       const response = await axios.post(`${apiUrl}/ask`, { query })
       setData(response.data)
     } catch (err) {
