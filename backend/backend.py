@@ -13,11 +13,14 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Load API Key from .env file
-if os.path.exists('.env'):
-    with open('.env') as f:
-        for line in f:
-            if line.startswith('GROQ_API_KEY='):
-                os.environ['GROQ_API_KEY'] = line.split('=')[1].strip()
+# Look in current dir or parent dir (root)
+for env_path in ['.env', '../.env', 'backend/.env']:
+    if os.path.exists(env_path):
+        with open(env_path) as f:
+            for line in f:
+                if line.startswith('GROQ_API_KEY='):
+                    os.environ['GROQ_API_KEY'] = line.split('=')[1].strip()
+        break
 
 # --- BUILT-IN GHANA KNOWLEDGE BASE ---
 GHANA_KNOWLEDGE = {
@@ -37,7 +40,7 @@ class UltimateRAG:
 
     def _manual_scan(self):
         try:
-            reader = PdfReader('2025-Budget-Statement-and-Economic-Policy_v4.pdf')
+            reader = PdfReader('data/2025-Budget-Statement-and-Economic-Policy_v4.pdf')
             for i in range(min(50, len(reader.pages))):
                 p = reader.pages[i].extract_text()
                 if not p: continue
@@ -49,7 +52,7 @@ class UltimateRAG:
         except: print("PDF Error")
 
         try:
-            df = pd.read_csv('Ghana_Election_Result.csv')
+            df = pd.read_csv('data/Ghana_Election_Result.csv')
             df.columns = [c.lower() for c in df.columns]
             for _, row in df.iterrows():
                 text = f"Election Result: In the {row.get('year')} election, {row.get('candidate')} ({row.get('party')}) secured {int(row.get('votes', 0)):,} votes in {row.get('region')}."
