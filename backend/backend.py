@@ -10,8 +10,15 @@ from collections import Counter
 from pypdf import PdfReader
 
 app = Flask(__name__)
-# Allow all origins for production compatibility on Render
-CORS(app, resources={r"/*": {"origins": "*", "allow_headers": "*", "methods": "*"}})
+# Robust CORS configuration
+CORS(app)
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 @app.route('/')
 def health_check():
