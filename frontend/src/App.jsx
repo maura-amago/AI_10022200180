@@ -29,7 +29,8 @@ function App() {
     setLoading(true)
     setError(null)
     try {
-      const response = await axios.post('http://127.0.0.1:5000/ask', { query })
+      const apiUrl = import.meta.env.NODE_ENV == 'production' ? "https://ai-10022200180.onrender.com" : 'http://localhost:5000'
+      const response = await axios.post(`${apiUrl}/ask`, { query })
       setData(response.data)
     } catch (err) {
       setError("RAG Engine Offline. Please start backend.py")
