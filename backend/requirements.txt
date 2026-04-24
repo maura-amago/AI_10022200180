@@ -5,3 +5,4 @@ numpy
 pypdf
 requests
 python-dotenv
+gunicorn
