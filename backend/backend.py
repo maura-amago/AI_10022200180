@@ -10,7 +10,12 @@ from collections import Counter
 from pypdf import PdfReader
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+# Allow all origins, methods, and headers for maximum compatibility on Render
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*", "allow_headers": "*", "methods": "*"}})
+
+@app.route('/')
+def health_check():
+    return jsonify({"status": "healthy", "message": "Ghana AI Backend is live!"})
 
 # Load API Key from .env file
 # Look in current dir or parent dir (root)
