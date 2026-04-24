@@ -1,0 +1,13 @@
+# Dependencies
+frontend/node_modules/
+backend/__pycache__/
+
+# Environment Variables (Secrets)
+.env
+frontend/.env
+backend/.env
+
+# OS Files
+.DS_Store
+frontend/.DS_Store
+backend/.DS_Store
